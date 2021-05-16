@@ -6,11 +6,25 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import FloodWait
 
 from bot import Bot
-from config import ADMINS, CHANNEL_ID
+from config import ADMINS, CHANNEL_ID, FORCE_SUB_CHANNEL
 from helper_func import encode
 
-@Bot.on_message(filters.private & ~filters.command(['start','batch','genlink']))
+@Bot.on_message(filters.private & filters.video | filters document | filters.audio | filters.photo & ~filters.command(['start','batch','genlink']))
 async def channel_post(client: Client, message: Message):
+    try:
+           await bot.get_chat_member(
+                 chat_id=FORCE_SUB_CHANNEL,
+                 user_id=update.from_user.id
+           )
+    except pyrogram.errors.exceptions.bad_request_400.UserNotParticipant:
+           await bot.send_message(
+                 chat_id=update.chat.id,
+                 text="You must join my updates channel to use me",
+                 parse_mode="html",
+                 reply_to_message_id=update.message_id,
+                 reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text = '✔️ Updates Channel', url = "https://t.me/Super_botz")]])
+           )
+           return
     reply_text = await message.reply_text("Please Wait...!", quote = True)
     try:
         post_message = await message.copy(chat_id = client.db_channel.id, disable_notification=True)

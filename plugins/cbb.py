@@ -29,8 +29,8 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             pass
     elif data == "rate":
         try:
-            await query.message.delete()
             await client.forward_messages(message.chat.id, "@Super_botz", 116)
+            await query.message.delete()
         except:
             await query.message.edit_text(
                 text = f"Coming soon",

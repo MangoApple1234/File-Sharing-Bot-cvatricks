@@ -15,9 +15,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             reply_markup = InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton("ℹ️ Help", url = "https://t.me/super_botz_support")
-                    ],
-                    [
+                        InlineKeyboardButton("⭐ Rate", callback_data = "rate"),
                         InlineKeyboardButton("⛔ Close", callback_data = "close")
                     ]
                 ]
@@ -29,3 +27,12 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             await query.message.reply_to_message.delete()
         except:
             pass
+    elif data == "rate":
+        try:
+            await query.message.delete()
+            await client.forward_messages(message.chat.id, "@Super_botz", 116)
+        except:
+            await query.message.edit_text(
+                text = f"Coming soon",
+                disable_web_page_preview = True
+            )

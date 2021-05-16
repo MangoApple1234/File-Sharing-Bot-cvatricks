@@ -9,7 +9,7 @@ from bot import Bot
 from config import ADMINS, CHANNEL_ID, FORCE_SUB_CHANNEL
 from helper_func import encode
 
-@Bot.on_message(filters.private & (filters.video | filters document | filters.audio | filters.photo) & ~filters.command(['start','batch','genlink']))
+@Bot.on_message(filters.private & (filters.video | filters document | filters.audio | filters.photo) ~filters.command(['start','batch','genlink']))
 async def channel_post(client: Client, message: Message):
     try:
            await bot.get_chat_member(

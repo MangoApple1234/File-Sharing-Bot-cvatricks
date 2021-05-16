@@ -13,16 +13,16 @@ from helper_func import encode
 @Bot.on_message((filters.private) & (filters.video | filters.document | filters.audio | filters.photo) & (~filters.command(['start','batch','genlink'])))
 async def channel_post(client: Client, message: Message):
     try:
-           await bot.get_chat_member(
+           await client.get_chat_member(
                  chat_id=FORCE_SUB_CHANNEL,
-                 user_id=update.from_user.id
+                 user_id=message.from_user.id
            )
     except UserNotParticipant:
-           await bot.send_message(
-                 chat_id=update.chat.id,
+           await client.send_message(
+                 chat_id=message.chat.id,
                  text="You must join my updates channel to use me",
                  parse_mode="html",
-                 reply_to_message_id=update.message_id,
+                 reply_to_message_id=message.message_id,
                  reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text = '✔️ Updates Channel', url = "https://t.me/Super_botz")]])
            )
            return

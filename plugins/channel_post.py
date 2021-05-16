@@ -4,6 +4,7 @@ import asyncio
 from pyrogram import filters, Client
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import FloodWait
+from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
 
 from bot import Bot
 from config import ADMINS, CHANNEL_ID, FORCE_SUB_CHANNEL
@@ -16,7 +17,7 @@ async def channel_post(client: Client, message: Message):
                  chat_id=FORCE_SUB_CHANNEL,
                  user_id=update.from_user.id
            )
-    except pyrogram.errors.exceptions.bad_request_400.UserNotParticipant:
+    except UserNotParticipant:
            await bot.send_message(
                  chat_id=update.chat.id,
                  text="You must join my updates channel to use me",
